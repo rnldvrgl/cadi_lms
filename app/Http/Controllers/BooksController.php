@@ -138,7 +138,11 @@ class BooksController extends Controller
     }
     function getAllBooks(){
         $this->createPenalty();
-        $data = cadi_book::where('is_archived', '0')->get();
+        if(Session::get('user_type') == "student"){
+        $data = cadi_book::where('is_archived', '==', 0)->get();
+        }else{
+           $data = cadi_book::get(); 
+        }
         $totalBook = cadi_book::count();
 //ddd($data);
         $oneYearAgo = Carbon::now()->subDays(365)->toDateString();
@@ -267,6 +271,26 @@ class BooksController extends Controller
 
         return redirect('/view-books') ->with('success', 'Book has been successfully archived');
     }
+
+    function unarchiveBooks(Request $request){
+
+        $log_data = [
+            'user_name' => Session::get('name'),
+            'action_done' => "Unarchived a book. Title: ". $request->input('NameOfBookToUnarchive'),
+            'date_done'=> date('Y/m/d'),
+            'time_done'=>date('H:i:s')
+
+        ];
+        cadi_log::create($log_data);
+
+        $books = cadi_book::find($request->input('id'));
+//        if($user){
+        $books->is_archived = "0";
+        $books->save();
+
+        return redirect('/view-books') ->with('success', 'Book has been successfully unarchived');
+    }
+
     function editBooks(Request $request){
         $request->validate([
             'access_no'=> 'required',

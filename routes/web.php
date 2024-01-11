@@ -89,6 +89,7 @@ Route::view('edit-student-modal', 'components/modals/edit_student');
 
 Route::post('delete-book', [booksController::class,'deleteBook']);
 Route::post('archive-book', [booksController::class,'archiveBooks']);
+Route::post('unarchive-book', [booksController::class,'unarchiveBooks']);
 Route::post('edit-book', [booksController::class,'editBooks']);
 Route::post('add-book', [booksController::class,'addBooks']);
 Route::post('ban-student', [AuthController::class,'banStudent']);
