@@ -65,7 +65,7 @@ Route::get('borrow-book',[bookBorrowController::class, 'showBorrowPage'])->middl
 Route::get("borrow-requests", [BooksController::class,'getAllTransactionInfo'])->middleware('isUSerLoggedIn');;
 Route::post("delete-transaction", [BookBorrowController::class,'deleteTransaction']);
 
-
+Route::get("view-transactions", [BooksController::class,'getAllTransactionInfo'])->middleware('isUSerLoggedIn');;
 //END OF BORROW AND RETURN OF STUDENTS
 
 

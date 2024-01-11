@@ -109,7 +109,11 @@
                                             }
                                             ?>
                                         <td>{{$isBarrowed}}</td>
+                                        {{-- FOR DEVELOPMENT --}}
                                         <td><iframe src="http://127.0.0.1:8000/generate-qr/{{$book->id}}/{{$book->title}}" height="220px" width="220px" frameborder="none"></iframe></td>
+
+                                        {{-- FOR PRODUCTION --}}
+                                         {{-- <td><iframe src="https://communityhighschool.online/{{$book->id}}/{{$book->title}}" height="220px" width="220px" frameborder="none"></iframe></td> --}}
                                         @if(Session::get('user_type') == "admin" || Session::get('user_type') == "librarian")
 
                                             <td>

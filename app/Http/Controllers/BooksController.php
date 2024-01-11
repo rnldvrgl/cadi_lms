@@ -20,11 +20,55 @@ class BooksController extends Controller
 
     function getAllTransactionInfo(){
         if(Session::get('user_type') == "student"){
-            return view('components.404',[
-                'errorCode'=>'404',
-                'headMessage' => 'Page not found',
-                'message' => 'This page is missing <br> <a href="./"> Go back</a>'
-            ]);
+            $studentId = Session::get('user_id');
+            //return view('components.404',[
+            //     'errorCode'=>'404',
+            //     'headMessage' => 'Page not found',
+            //     'message' => 'This page is missing <br> <a href="./"> Go back</a>'
+            // ]);
+            $transaction_info = DB::table("cadi_borrowed_book_infos as cbbi")
+            ->join("cadi_users as cu","cu.id","=", "cbbi.user_id")
+            ->join("cadi_books as cb","cb.id","=", "cbbi.book_id")
+            ->select("cbbi.*","cu.name", "cb.title")
+            ->where('cbbi.user_id', $studentId) // Filter by the logged-in student's ID
+            ->where('cbbi.deleted_at', null)
+            ->get();
+            $showOverdueNotifications = cadi_borrowed_book_info::where('due_date', '<', date('Y-m-d'))
+                ->where('id', Session::get('user_id'))
+                ->where('is_returned', 0)
+                ->get();
+            $showOverdueNotificationsCount = cadi_borrowed_book_info::where ('due_date', '<', date('Y-m-d'))
+                ->where('id', Session::get('user_id'))
+                ->where('is_returned', 0)
+                ->count();
+            $oneYearAgo = Carbon::now()->subDays(365)->toDateString();
+            $getAllNotifications = cadi_all_notification::where('date_created','>',$oneYearAgo)
+                ->get();
+            $getAllNotificationsCount = cadi_all_notification::where('date_created','>',$oneYearAgo)
+                ->count();
+            $getUserNotifications = cadi_user_notification::where('date_created','>',$oneYearAgo)
+                ->orderBy('date_created', 'desc')
+                ->get();
+            $getUserNotificationsCount = cadi_user_notification::where('date_created','>',$oneYearAgo)
+                ->orderBy('date_created', 'desc')
+                ->count();
+            $penalty = cadi_user::where('id', Session::get('user_id'))
+                ->where('penalty', 15)
+                ->count();
+
+            $overdueNotificationMessage = "";
+            if($showOverdueNotifications){
+                $overdueNotificationMessage = "The last book you borrowed has reach it's due date,
+                         please return it immediately to avoid penalties";
+            }
+                return view('student_transaction/student_transaction',[
+                    'borrowTransactionInfos' => $transaction_info,
+                    'allNotificationInfos'=>$getAllNotifications,
+                    'overdueNotification' => $overdueNotificationMessage,
+                    'allUserNotificationInfos'=>$getUserNotifications,
+                    'notifCount' => array_sum([$getAllNotificationsCount, $getUserNotificationsCount, $showOverdueNotificationsCount]),
+                    'penalty' => $penalty
+                ]);
         }
         else {
             $transaction_info = DB::table("cadi_borrowed_book_infos as cbbi")
@@ -33,8 +77,7 @@ class BooksController extends Controller
                 ->select("cbbi.*","cu.name", "cb.title")
                 ->where('cbbi.deleted_at', null)
                 ->get();
-    //        ddd($transaction_info[0]->process_id);
-            $showOverdueNotifications = cadi_borrowed_book_info::where ('due_date', '<', date('Y-m-d'))
+            $showOverdueNotifications = cadi_borrowed_book_info::where('due_date', '<', date('Y-m-d'))
                 ->where('id', Session::get('user_id'))
                 ->where('is_returned', 0)
                 ->get();
@@ -69,10 +112,10 @@ class BooksController extends Controller
                     'allUserNotificationInfos'=>$getUserNotifications,
                     'notifCount' => array_sum([$getAllNotificationsCount, $getUserNotificationsCount, $showOverdueNotificationsCount]),
                     'penalty' => $penalty
-
                 ]);
             }
     }
+    
     function addNotificationForOverdue(Request $request){
 //        ddd($request->all());
 // Create a new UserNotificatio               $getAllNotifications = cadi_all_notification::where('date_created','>',$oneYearAgo)

@@ -70,9 +70,10 @@
     @if(Session::get('user_type') == 'student')
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-
             <a class="nav-link" href="view-books">View Books</a>
-
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="view-transactions">View Transactions</a>
         </li>
     @endif
     @if(Session::get('user_type') == 'admin' || Session::get('user_type') == 'librarian')
