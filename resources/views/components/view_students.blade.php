@@ -113,10 +113,17 @@
                                                 <button
                                                     onclick="populateEditStudentModal('{{$student->id}}', '{{$student->name}}','{{$student->email}}','{{$student->is_banned}}','{{$student->is_active}}', '{{$student->grade}}', '{{$student->section}}')"
                                                     class="btn btn-primary btn-sm" title="Edit"><i class="fas fa-edit"></i></button>
-                                                <button
-                                                    onclick="populateArchiveStudentModal('{{$student->id}}', '{{$student->name}}')"
-                                                    class="btn btn-info btn-sm" title="{{trans('app.archive_user')}}"><i
-                                                        class="fas fa-file-archive archiveStudentModal"></i></button>
+                                                <?php if ($student->is_archived == 0): ?>
+                                                    <button
+                                                        onclick="populateArchiveStudentModal('{{$student->id}}', '{{$student->name}}')"
+                                                        class="btn btn-info btn-sm" title="{{trans('app.archive_user')}}"><i
+                                                            class="fas fa-file-archive archiveStudentModal"></i></button>
+                                                <?php else: ?>
+                                                    <button
+                                                        onclick="populateUnarchiveStudentModal('{{$student->id}}', '{{$student->name}}')"
+                                                        class="btn btn-success btn-sm" title="{{trans('app.unarchive_user')}}"><i
+                                                            class="fas fa-key"></i></button>
+                                                <?php endif; ?>
                                                 <button data-item-id="{{ $student->id }}"
                                                         data-item-id-2="{{ $student->name}}"
                                                         class="btn btn-danger btn-sm showDeleteModal"><i
@@ -165,6 +172,7 @@
 @include('components/modals/ban_student')
 @include('components/modals/edit_student')
 @include('components/modals/archive_student')
+@include('components/modals/unarchive_student')
 
 
 <!-- JavaScript to show the modal when the button is clicked -->
@@ -199,7 +207,12 @@
         $("#NameOfStudentToArchive").val(name);
         $("#idOfStudentToArchive").val(id);
         $("#archiveStudentModal").modal("show");
-        // console.log("clicked");
+    }
+
+    function populateUnarchiveStudentModal(id, name) {
+        $("#NameOfStudentToUnnarchive").val(name);
+        $("#idOfStudentToUnarchive").val(id);
+        $("#unarchiveStudentModal").modal("show");
     }
 
     // BAN STUDENT MODAL

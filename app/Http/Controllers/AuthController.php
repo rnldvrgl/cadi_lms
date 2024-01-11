@@ -43,14 +43,29 @@ class AuthController extends Controller
 
         ];
         cadi_log::create($log_data);
-//ddd($request->input('idOfStudentToArchive'));
         $student = cadi_user::find($request->input('idOfStudentToArchive'));
-//        if($user){
         $student->is_archived = "1";
         $student->save();
-
         return redirect('/view-students')->with('success','You have successfully archived '.$student->name);
     }
+
+    function unarchiveStudent(Request $request){
+
+        $log_data = [
+            'user_name' => Session::get('name'),
+            'action_done' => "Unarchived a student. Student name: ". $request->input('NameOfStudentToUnarchive'),
+            'date_done'=> Carbon::now('Asia/Manila')->format('F-d-Y'),
+            'time_done'=>Carbon::now('Asia/Manila')->format('H:i:s')
+        ];
+        cadi_log::create($log_data);
+        $student = cadi_user::find($request->input('idOfStudentToUnarchive'));
+        // dd($request);
+        $student->is_archived = "0";
+        $student->save();
+
+        return redirect('/view-students')->with('success','You have successfully unarchived '.$student->name);
+    }
+
     function banStudent(Request $request){
         $log_data = [
             'user_name' => Session::get('name'),

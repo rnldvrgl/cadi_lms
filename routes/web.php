@@ -111,6 +111,7 @@ Route::view('blank', 'blank');
 
 //MANAGE STUDENT
 Route::post('archive-student', [AuthController::class,'archiveStudent']);
+Route::post('unarchive-student', [AuthController::class,'unarchiveStudent']);
 //END OF MANAGE STUDENT
 
 Route::post('reset_password', [AuthController::class,'resetPassword']);
