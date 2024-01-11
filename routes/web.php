@@ -65,7 +65,7 @@ Route::get('borrow-book',[bookBorrowController::class, 'showBorrowPage'])->middl
 Route::get("borrow-requests", [BooksController::class,'getAllTransactionInfo'])->middleware('isUSerLoggedIn');;
 Route::post("delete-transaction", [BookBorrowController::class,'deleteTransaction']);
 
-
+Route::get("view-transactions", [BooksController::class,'getAllTransactionInfo'])->middleware('isUSerLoggedIn');;
 //END OF BORROW AND RETURN OF STUDENTS
 
 
@@ -89,6 +89,7 @@ Route::view('edit-student-modal', 'components/modals/edit_student');
 
 Route::post('delete-book', [booksController::class,'deleteBook']);
 Route::post('archive-book', [booksController::class,'archiveBooks']);
+Route::post('unarchive-book', [booksController::class,'unarchiveBooks']);
 Route::post('edit-book', [booksController::class,'editBooks']);
 Route::post('add-book', [booksController::class,'addBooks']);
 Route::post('ban-student', [AuthController::class,'banStudent']);
@@ -111,6 +112,7 @@ Route::view('blank', 'blank');
 
 //MANAGE STUDENT
 Route::post('archive-student', [AuthController::class,'archiveStudent']);
+Route::post('unarchive-student', [AuthController::class,'unarchiveStudent']);
 //END OF MANAGE STUDENT
 
 Route::post('reset_password', [AuthController::class,'resetPassword']);

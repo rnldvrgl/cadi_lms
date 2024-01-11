@@ -59,6 +59,8 @@
                                     <th>Name</th>
 {{--                                    <th>Username</th>--}}
                                     <th>Email</th>
+                                    <th>Grade</th>
+                                    <th>Section</th>
 {{--                                    <th>Verified status</th>--}}
                                     <th>Status</th>
                                     <th>Last login</th>
@@ -74,7 +76,10 @@
                                         <td>{{$student->id}}</td>
                                         <td>{{$student->name}}</td>
 {{--                                        <td>{{$student->uname}}</td>--}}
-                                        <td>{{$student->email}}</td> {{-- the data fromthis doesnt work in edit--}}
+                                        <td>{{$student->email}}</td> 
+                                        <td>{{$student->grade}}</td>
+                                        <td>{{$student->section}}</td>
+                                        {{-- the data fromthis doesnt work in edit--}}
 
 {{--                                        @if($student->is_verified == 0)--}}
 {{--                                            <td><span--}}
@@ -106,12 +111,19 @@
                                         <td>
                                             <div style="display: flex; gap: 5px">
                                                 <button
-                                                    onclick="populateEditStudentModal('{{$student->id}}', '{{$student->name}}','{{$student->email}}','{{$student->is_banned}}','{{$student->is_active}}')"
+                                                    onclick="populateEditStudentModal('{{$student->id}}', '{{$student->name}}','{{$student->email}}','{{$student->is_banned}}','{{$student->is_active}}', '{{$student->grade}}', '{{$student->section}}')"
                                                     class="btn btn-primary btn-sm" title="Edit"><i class="fas fa-edit"></i></button>
-                                                <button
-                                                    onclick="populateArchiveStudentModal('{{$student->id}}', '{{$student->name}}')"
-                                                    class="btn btn-info btn-sm" title="{{trans('app.archive_user')}}"><i
-                                                        class="fas fa-file-archive archiveStudentModal"></i></button>
+                                                <?php if ($student->is_archived == 0): ?>
+                                                    <button
+                                                        onclick="populateArchiveStudentModal('{{$student->id}}', '{{$student->name}}')"
+                                                        class="btn btn-info btn-sm" title="{{trans('app.archive_user')}}"><i
+                                                            class="fas fa-file-archive archiveStudentModal"></i></button>
+                                                <?php else: ?>
+                                                    <button
+                                                        onclick="populateUnarchiveStudentModal('{{$student->id}}', '{{$student->name}}')"
+                                                        class="btn btn-success btn-sm" title="{{trans('app.unarchive_user')}}"><i
+                                                            class="fas fa-key"></i></button>
+                                                <?php endif; ?>
                                                 <button data-item-id="{{ $student->id }}"
                                                         data-item-id-2="{{ $student->name}}"
                                                         class="btn btn-danger btn-sm showDeleteModal"><i
@@ -160,6 +172,7 @@
 @include('components/modals/ban_student')
 @include('components/modals/edit_student')
 @include('components/modals/archive_student')
+@include('components/modals/unarchive_student')
 
 
 <!-- JavaScript to show the modal when the button is clicked -->
@@ -169,10 +182,12 @@
         $("#addStudentModal").modal("show");
     }
     //EDIT BOOK MODAL
-    function populateEditStudentModal(id, name, email, is_banned, is_active) {
+    function populateEditStudentModal(id, name, email, is_banned, is_active, grade, section) {
         $("#studentIdToEdit").val(id);
         $("#edit_name").val(name);
         $("#edit_email").val(email);
+        $("#edit_grade").val(grade);
+        $("#edit_section").val(section);
         $("#edit_active").val(is_active);
         $("#edit_banned").val(is_banned);
 
@@ -192,7 +207,12 @@
         $("#NameOfStudentToArchive").val(name);
         $("#idOfStudentToArchive").val(id);
         $("#archiveStudentModal").modal("show");
-        // console.log("clicked");
+    }
+
+    function populateUnarchiveStudentModal(id, name) {
+        $("#NameOfStudentToUnnarchive").val(name);
+        $("#idOfStudentToUnarchive").val(id);
+        $("#unarchiveStudentModal").modal("show");
     }
 
     // BAN STUDENT MODAL

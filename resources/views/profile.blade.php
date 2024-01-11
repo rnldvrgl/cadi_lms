@@ -41,9 +41,15 @@
                                 <label>User ID: </label>
                                 <input type="text" name="startDate" class="form-control" value="{{$user_id}}" disabled>
                                 <label>Name: </label>
-                                <input type="text" name="endDate" class="form-control" value="{{$name}}" disabled>
+                                <input type="text" name="name" class="form-control" value="{{$name}}" disabled>
                                 <label>Email:</label>
-                                <input type="text" name="endDate" class="form-control" value="{{$email}}" disabled>
+                                <input type="text" name="email" class="form-control" value="{{$email}}" disabled>
+                                <?php if ($user_type == 'student'): ?>
+                                    <label>Grade:</label>
+                                    <input type="text" name="grade" class="form-control" value="{{ $grade }}" disabled>
+                                    <label>Section:</label>
+                                    <input type="text" name="section" class="form-control" value="{{ $section }}" disabled>
+                                <?php endif; ?>
                                 <label>Date created:</label>
                                 <input type="text" name="endDate" class="form-control" value="{{$date_created}}" disabled>
                             </div>

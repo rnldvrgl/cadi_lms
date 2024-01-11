@@ -23,13 +23,21 @@
                                 <div class="form-group">
                                     <label for="edit_email">Email</label>
                                     <input type="text" class="form-control" id="edit_email" name="edit_email">
-                                    <hr>
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit_grade">Grade</label>
+                                    <input type="text" class="form-control" id="edit_grade" name="edit_grade">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit_section">Section</label>
+                                    <input type="text" class="form-control" id="edit_section" name="edit_section">
+                                </div>
+                                <hr>
+                                <div class="form-group">
                                     <div class="custom-control custom-switch">
                                         <input type="checkbox" class="custom-control-input" id="flexSwitchCheckChecked" checked>
                                         <label class="custom-control-label" for="flexSwitchCheckChecked">Active Status</label>
                                     </div>
-
-
                                 </div>
                                 <!-- Other form fields go here -->
                             </div>

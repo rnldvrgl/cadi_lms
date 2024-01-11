@@ -103,6 +103,7 @@ class LogPDFController extends Controller
         // Return the PDF as a downloadable file
         return $pdf->stream('MCHS Library log reports.pdf');
     }
+    
     public function generateBorrowAndReturnPDF($startD, $endD){
         $transaction_info = DB::table("cadi_borrowed_book_infos as cbbi")
             ->where('date_borrowed','>=', $startD)

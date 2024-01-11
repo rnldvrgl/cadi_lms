@@ -109,7 +109,11 @@
                                             }
                                             ?>
                                         <td>{{$isBarrowed}}</td>
+                                        {{-- FOR DEVELOPMENT --}}
                                         <td><iframe src="http://127.0.0.1:8000/generate-qr/{{$book->id}}/{{$book->title}}" height="220px" width="220px" frameborder="none"></iframe></td>
+
+                                        {{-- FOR PRODUCTION --}}
+                                         {{-- <td><iframe src="https://communityhighschool.online/{{$book->id}}/{{$book->title}}" height="220px" width="220px" frameborder="none"></iframe></td> --}}
                                         @if(Session::get('user_type') == "admin" || Session::get('user_type') == "librarian")
 
                                             <td>
@@ -118,16 +122,23 @@
 
                                                     ?>
                                                 <div style="display: flex; gap: 5px">
-    {{--                                                <button onclick="showGenerateQr()" class="btn btn-info btn-sm" title="View QR"><i class="fas fa-qrcode"></i></button>--}}
                                                     <button
                                                         onclick="populateEditModal('{{$book->id}}', '{{$book->accesson_number}}', '{{$book->title}}', '{{$book->author}}','{{json_encode(str_replace($specialCharacters, ' ',nl2br($book->place_of_publication)))}}','{{$book->publisher}}','{{$book->copyright}}','{{$book->available_count}}','{{$book->borrowed_count}}',{{$book->number_of_copies}},10)"
                                                         class="btn btn-info btn-sm open-edit-modal"><i class="fas fa-edit"
                                                                                                        title="Edit"></i>
                                                     </button>
+                                                    <?php if ($book->is_archived == 0): ?>
                                                     <button data-item-id-2="{{ $book->id }}"
                                                             data-item-id-3="{{$book->title}}"
                                                             class="btn btn-warning btn-sm showArchiveModal"><i
                                                             class="fas fa-archive" title="Archive"></i></button>
+                                                            <?php else: ?>
+                                                    <button
+                                                        data-item-id-2="{{ $book->id }}"
+                                                        data-item-id-3="{{$book->title}}"
+                                                        class="btn btn-success btn-sm showUnarchiveModal" title="Unarchive"><i
+                                                            class="fas fa-key"></i></button>
+                                                <?php endif; ?>
                                                     <button data-item-id="{{ $book->id }}"
                                                             data-item-id-2="{{ $book->title }}"
                                                             class="btn btn-danger btn-sm showDeleteModal"><i
@@ -165,6 +176,7 @@
 @include('components/logout')
 @include('components/modals/delete_book')
 @include('components/modals/archive_book')
+@include('components/modals/unarchive_book')
 @include('components/modals/edit_book')
 @include('components/modals/add_book')
 @include('QrCode.Qr-Generator')
@@ -193,6 +205,16 @@
             $("#itemToArchive").val(itemId2);
             $("#NameOfBookToArchive").val(itemId3);
             $("#archiveModal").modal("show");
+        });
+    });
+
+    $(document).ready(function () {
+        $(".showUnarchiveModal").click(function () {
+            var itemId2 = $(this).data("item-id-2");
+            var itemId3 = $(this).data("item-id-3");
+            $("#itemToUnarchive").val(itemId2);
+            $("#NameOfBookToUnarchive").val(itemId3);
+            $("#unarchiveModal").modal("show");
         });
     });
 

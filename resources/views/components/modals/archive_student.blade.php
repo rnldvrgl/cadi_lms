@@ -9,7 +9,6 @@
             </div>
             <div class="modal-body">
                 Are you sure you want to archive this student?
-                This action can't be undone.
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
