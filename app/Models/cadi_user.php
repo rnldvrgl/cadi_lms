@@ -15,6 +15,8 @@ class cadi_user extends Model
         'uname' =>'string',
         'email'=> 'string',
         'pword'=> 'string',
+        'grade'=> 'string',
+        'section'=> 'string',
         'idOfStudentToBan' => 'string',
         'NameOfStudentToArchive' => 'string',
         'idOfStudentToArchive' =>'string'
@@ -25,6 +27,8 @@ class cadi_user extends Model
         'uname',
         'email',
         'pword',
+        'grade',
+        'section',
         'usertype',
         'is_active',
         'is_banned',

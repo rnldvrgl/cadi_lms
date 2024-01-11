@@ -24,6 +24,8 @@ class AuthController extends Controller
         $student->name = $request->input('edit_name');
         $student->uname = $request->input('edit_username');
         $student->email = $request->input('edit_email');
+        $student->grade = $request->input('edit_grade');
+        $student->section = $request->input('edit_section');
         $student->is_active = $request->input('edit_active');
         $student->is_banned = $request->input('edit_banned');
         $student->save();
@@ -95,6 +97,9 @@ class AuthController extends Controller
             'user_id'=>Session::get('user_id'),
             'name'=>Session::get('name'),
             'email'=>Session::get('email'),
+            'grade'=>Session::get('grade'),
+            'section'=>Session::get('section'),
+            'user_type'=>Session::get('user_type'),
             'date_created'=> Session::get('date_created'),
             'allNotificationInfos'=>$getAllNotifications,
             'overdueNotification' => $overdueNotificationMessage,
@@ -197,6 +202,8 @@ class AuthController extends Controller
                     Session::put('current_user', $user);
                     Session::put('name', $user->name);
                     Session::put('email', $user->email);
+                    Session::put('grade', $user->grade);
+                    Session::put('section', $user->section);
                     Session::put('user_type', $user->usertype);
                     Session::put('date_created', $user->created_at);
                     // Successful login
@@ -269,11 +276,16 @@ class AuthController extends Controller
             'student_fullname' => 'required | regex:/^[a-zA-Z\s]+$/',
             'student_email'=>'required |max:50 | email',
             'student_password'=>'required | min:5 | max:16',
-
+            'student_grade'=>'required',
+            'student_section'=>'required | regex:/^[a-zA-Z\s]+$/',
         ]);
 
         $email = $request->input('student_email');
         $pword = $request->input('student_password');
+        $grade = $request->input('student_grade');
+        $section = $request->input('student_section');
+
+        // dd($request);
         $checkUser = cadi_user::where('email', $email)->first();
         if($checkUser){
             return redirect('register')->with('failed', 'The email address is already taken');
@@ -283,6 +295,8 @@ class AuthController extends Controller
                 'uname' => $email,
                 'email' => $email,
                 'pword' => $pword,
+                'grade' => $grade,
+                'section' => $section,
                 'usertype' => 'student'
             ];
             cadi_user::create($data);
@@ -292,6 +306,7 @@ class AuthController extends Controller
             // Successful login
             return redirect('view-students')->with('success', 'You have successfully created a student account.');
         }
+    
     }
 
     public  function  findUserToChangePass(Request $request){

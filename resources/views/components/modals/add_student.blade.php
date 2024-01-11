@@ -22,6 +22,14 @@
                                     <input pattern="[A-Za-z\s]+" type="text" class="form-control" id="student_fullname" name="student_fullname" required>
                                 </div>
                                 <div class="form-group">
+                                    <label for="id_access_no">Grade</label>
+                                    <input pattern="[0-9\s]+" type="text" class="form-control" id="student_fullname" name="student_grade" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_access_no">Section</label>
+                                    <input pattern="[A-Za-z\s]+" type="text" class="form-control" id="student_fullname" name="student_section" required>
+                                </div>
+                                <div class="form-group">
                                     <label for="id_title">Email</label>
                                     <input type="text" class="form-control" id="student_email" name="student_email" required>
                                 </div>
