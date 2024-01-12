@@ -85,9 +85,15 @@
                                             @endif
 
                                         @else
-                                            <td><span
-                                                    class="badge badge-primary rounded-pill d-inline">No bad status</span>
-                                            </td>
+                                                                                    @if(empty($bti->return_date))
+                                                <td><span
+                                                        class="badge badge-primary rounded-pill d-inline">No bad status</span>
+                                                </td>
+                                            @else
+                                                <td><span
+                                                        class="badge badge-success rounded-pill d-inline">Returned</span>
+                                                </td>
+                                                @endif
                                         @endif
                                         <td>
                                             {{--                                            showAlertAsModal--}}
