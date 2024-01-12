@@ -19,8 +19,6 @@ class cadi_book extends Model
         'book_title',
         'due_date',
         'borrower_id'
-
-
     ];
 
     protected $fillable = [

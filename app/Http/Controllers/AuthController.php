@@ -14,6 +14,7 @@ use App\Models\cadi_user;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use App\Mail\SendVerificationMailer;
+use App\Models\cadi_userlog;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
 
@@ -207,6 +208,15 @@ class AuthController extends Controller
                     ]);
                 }
                 else if ($user) {
+                    $log_data = [
+                        'user_name' => $user->name,
+                        'action_done' => $user->name . " has logged in.",
+                        'date_done' => Carbon::now('Asia/Manila')->format('Y-m-d'),
+                        'time_done' => Carbon::now('Asia/Manila')->format('H:i:s'),
+                    ];
+
+                    cadi_userlog::create($log_data);
+
                     //GET THE USER'S LAST LOGIN TIME AND DATE
                     $userLog = cadi_user::find($user->id);
         //        if($user){

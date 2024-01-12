@@ -19,7 +19,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="id_access_no">Accesson number</label>
-                                    <input type="number" class="form-control" id="id_access_no" name="add_access_no" required>
+                                    <input type="text" class="form-control" id="id_access_no" name="add_access_no" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="id_title">Title</label>
@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="id_author">Author</label>
-                                    <input pattern="[A-Za-z\s]+" type="text" class="form-control" id="id_author" name="author" required>
+                                    <input type="text" class="form-control" id="id_author" name="author" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="id_available_count">Available</label>

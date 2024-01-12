@@ -258,7 +258,7 @@ class BooksController extends Controller
         $request->validate([
             'add_access_no'=> 'required',
             'title'=> 'required',
-            'author'=> 'required | regex:/^[a-zA-Z\s]+$/',
+            'author'=> 'required',
             'available_count'=> 'required',
             'add_publication_place'=> 'required',
             'publisher'=> 'required',
