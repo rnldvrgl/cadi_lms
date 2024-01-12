@@ -52,7 +52,7 @@
                                     <label>Due Date: </label>
                                     <input id="book_title" class="form-control" name="due_date" value="{{date('Y-m-d', strtotime(date('Y-m-d') . ' +4 days'))}}" readonly>
                                     <label>Borrower ID: </label>
-                                    <input class="form-control" name="borrower_id">
+                                    <input class="form-control" name="borrower_id" required>
                                     <br>
                                     <input type="submit" class="btn btn-primary form-control" value="Borrow">
                                 </form>

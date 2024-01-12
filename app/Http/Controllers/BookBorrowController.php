@@ -114,7 +114,9 @@ class BookBorrowController extends Controller
         $borrow_data = cadi_borrowed_book_info::where("is_returned", 0)
                                                 ->where("user_id",   Session::get('user_id'))
                                                 ->count();
-//        ddd($borrow_data);
+        if(!$borrow_data){
+            return redirect("borrow-requests")->with('failed','Borrower not found.');
+        }
         if("$borrow_data" > 3){
             return redirect("borrow-requests")->with('failed','You have to return your borrowed book first.');
         }else {
