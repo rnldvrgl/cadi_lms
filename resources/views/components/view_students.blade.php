@@ -30,18 +30,23 @@
             <!-- Topbar -->
             @include("components.navbar.main_dash_navbar")
             @include('components.modals.add_student')
+            @include('components.modals.add_multipleStudent')
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-
                 <!-- Page Heading -->
-
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">Students</h1>
-                        <a href="#" onclick="addStudentModal()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Add student</a>
+                    <div>
+                    {{-- Upload csv file --}}
+                    <a href="#" onclick="addMultipleStudentModal()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                class="fas fa-download fa-sm text-white-50"></i> Add Mutilple students</a>
+
+                    <a href="#" onclick="addStudentModal()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                class="fas fa-download fa-sm text-white-50"></i> Add student</a>
                 </div>
+            </div>
 
 
                 <!-- DataTales Example -->
@@ -181,6 +186,11 @@
     function addStudentModal(){
         $("#addStudentModal").modal("show");
     }
+
+    function addMultipleStudentModal(){
+          $("#addMultipleStudentModal").modal("show");
+    }
+
     //EDIT BOOK MODAL
     function populateEditStudentModal(id, name, email, is_banned, is_active, grade, section) {
         $("#studentIdToEdit").val(id);

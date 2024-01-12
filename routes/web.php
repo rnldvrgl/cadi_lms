@@ -195,6 +195,8 @@ Route::get('/logout', function () {
 Route::post("users", [AuthController::class,'getData']);
 Route::post("register_now", [AuthController::class,'addNewUser']);
 Route::post("add-student", [AuthController::class,'addNewStudentUser']);
+Route::post("upload-students", [AuthController::class,'addMultipleStudents']);
+
 
 //For group middleware
 //Route::group(['middleware'=>['protectedPage']], function (){
