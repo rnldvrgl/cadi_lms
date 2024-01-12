@@ -45,6 +45,7 @@
                                 <tr>
                                     <th>Process ID</th>
                                     <th>Book Title</th>
+                                    <th>Borrowed Date</th>
                                     <th>Due Date</th>
                                     <th>Return Date</th>
                                     <th>Status</th>
@@ -56,6 +57,7 @@
                                     <tr>
                                         <td>{{$bti->process_id}}</td>
                                         <td>{{$bti->title}}</td>
+                                        <td>{{$bti->date_borrowed}}</td>
                                         <td>{{$bti->due_date}}</td>
                                         <td>{{$bti->return_date}}</td>
                                         @if($bti->is_returned == 3)
@@ -75,9 +77,15 @@
                                             @endif
 
                                         @else
-                                            <td><span
-                                                    class="badge badge-primary rounded-pill d-inline">No bad status</span>
-                                            </td>
+                                            @if(empty($bti->return_date))
+                                                <td><span
+                                                        class="badge badge-primary rounded-pill d-inline">No bad status</span>
+                                                </td>
+                                            @else
+                                                <td><span
+                                                        class="badge badge-success rounded-pill d-inline">Returned</span>
+                                                </td>
+                                                @endif
                                         @endif
                                     </tr>
                                 @endforeach

@@ -33,6 +33,7 @@ class BooksController extends Controller
             ->where('cbbi.user_id', $studentId) // Filter by the logged-in student's ID
             ->where('cbbi.deleted_at', null)
             ->get();
+
             $showOverdueNotifications = cadi_borrowed_book_info::where('due_date', '<', date('Y-m-d'))
                 ->where('id', Session::get('user_id'))
                 ->where('is_returned', 0)
