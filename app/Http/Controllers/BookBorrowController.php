@@ -110,13 +110,17 @@ class BookBorrowController extends Controller
      * @throws \Exception
      */
     public function processBorrowBook(Request $request){
+        $borrowerId = intval($request->input('borrower_id'));
+        $userExists = cadi_user::where('id', $borrowerId)->exists();
+
+        if (!$userExists) {
+            return redirect("borrow-requests")->with('failed', 'Borrower not found.');
+        }
 
         $borrow_data = cadi_borrowed_book_info::where("is_returned", 0)
-                                                ->where("user_id",   Session::get('user_id'))
+                                                ->where("user_id", $borrowerId)
                                                 ->count();
-        if(!$borrow_data){
-            return redirect("borrow-requests")->with('failed','Borrower not found.');
-        }
+
         if("$borrow_data" > 3){
             return redirect("borrow-requests")->with('failed','You have to return your borrowed book first.');
         }else {
