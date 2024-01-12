@@ -117,6 +117,12 @@ class BookBorrowController extends Controller
             return redirect("borrow-requests")->with('failed', 'Borrower not found.');
         }
 
+        $isBookArchived = cadi_book::where('id', $request->input('book_id'))->where('is_archived', 1)->exists();
+        
+        if ($isBookArchived) {
+            return redirect("borrow-requests")->with('failed', 'Book is archived.');
+        }
+
         $borrow_data = cadi_borrowed_book_info::where("is_returned", 0)
                                                 ->where("user_id", $borrowerId)
                                                 ->count();
