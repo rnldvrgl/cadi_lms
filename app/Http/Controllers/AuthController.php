@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use App\Mail\SendVerificationMailer;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -323,6 +324,71 @@ class AuthController extends Controller
         }
     
     }
+
+    public function addMultipleStudents(Request $request): RedirectResponse
+    {
+        $successfulUploads = 0;
+
+        $request->validate([
+        'csv_file' => 'required|mimes:csv,txt|max:2048',
+        ]);
+
+        $file = $request->file('csv_file');
+
+    // Process the CSV file
+        $csvData = file_get_contents($file);
+
+        $rows = array_map('str_getcsv', explode("\n", $csvData));
+
+        // Remove the headers
+        array_shift($rows);
+        array_pop($rows);
+
+        // ddd($rows);
+        foreach ($rows as $row) {
+
+            // CSV format: fullname,email,password,grade,section
+            $data = [
+                'name' => $row[0],
+                'uname' => $row[1],
+                'email' => $row[1],
+                'pword' => $row[2],
+                'grade' => $row[3],
+                'section' => $row[4],
+                'usertype' => 'student',
+            ];
+            
+            // dd($data);
+            //Validate data before creating a user
+            $validator = Validator::make($data, [
+                'name' => 'required|regex:/^[a-zA-Z\s]+$/',
+                'uname' => 'required|email|max:50',
+                'pword' => 'required|min:5|max:16',
+                'grade' => 'required',
+                'section' => 'required|regex:/^[a-zA-Z\s]+$/',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect('view-students')->withErrors($validator)->withInput();
+            }
+
+            // Check if the user already exists
+            $checkUser = cadi_user::where('email', $data['email'])->first();
+
+             if (!$checkUser) {
+                // Create a new user
+                cadi_user::create($data);
+                $successfulUploads++;
+            }
+        }
+        
+        if($successfulUploads > 0){
+            return redirect('view-students')->with('success', "You have successfully added $successfulUploads student/s.");
+        }else{
+            return redirect('view-students')->with('failed', "No students were added. All students already exist.");
+        }
+    } 
+    
 
     public  function  findUserToChangePass(Request $request){
 

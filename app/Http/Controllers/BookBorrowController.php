@@ -114,11 +114,17 @@ class BookBorrowController extends Controller
         $borrow_data = cadi_borrowed_book_info::where("is_returned", 0)
                                                 ->where("user_id",   Session::get('user_id'))
                                                 ->count();
-//        ddd($borrow_data);
+        if(!$borrow_data){
+            return redirect("borrow-requests")->with('failed','Borrower not found.');
+        }
         if("$borrow_data" > 3){
             return redirect("borrow-requests")->with('failed','You have to return your borrowed book first.');
         }else {
             $updateBookRecord = cadi_book::find($request->input('book_id'));
+            // ddd($updateBookRecord->borrowed_count);
+            if($updateBookRecord->borrowed_count == $updateBookRecord->number_of_copies){
+                return redirect("borrow-requests")->with('failed','Book is not available. All available copies are borrowed.');
+            }
             //            ddd($updateBookRecord);
             $updateBookRecord->borrowed_count = $updateBookRecord->borrowed_count + 1;
             $updateBookRecord->available_count = $updateBookRecord->available_count - 1;
@@ -263,29 +269,28 @@ class BookBorrowController extends Controller
         $BookID = $request->input('book_id');
         $BorrowerID =  intval($request->input('borrower_id'));
         $bookReturn = cadi_borrowed_book_info::where('book_id', $BookID)->where('user_id', $BorrowerID)->where('is_returned', 0)->first();
-    //    dd($bookReturn);
 
         if(!$bookReturn){
-            return redirect("return-requests")->with('failed','Record was not found.');
+            return redirect("borrow-requests")->with('failed','Record was not found.');
         }
 
         if($bookReturn->return_date != null){
-            return redirect("return-requests")->with('failed','This book is already returned.');
+            return redirect("borrow-requests")->with('failed','This book is already returned.');
         }else{
             $updateBookRecord = cadi_book::where('id', $request->input('book_id'))->get();
-//            ddd($updateBookRecord);
-            $updateBookRecord[0]->borrowed_count = $updateBookRecord[0]->borrowed_count-1;
-            $updateBookRecord[0]->available_count = $updateBookRecord[0]->available_count+1;
+
+            $updateBookRecord[0]->borrowed_count = $updateBookRecord[0]->borrowed_count - 1;
+            $updateBookRecord[0]->available_count = $updateBookRecord[0]->available_count + 1;
             $updateBookRecord[0]->save();
             if ($bookReturn) {
                 $bookReturn->is_returned = 1;
                 $bookReturn->return_date = Carbon::now('Asia/Manila')->format("Y-m-d");
                 $bookReturn->save();
-
-                return redirect("return-requests")->with('success','Book has been successfully returned');
+                return redirect("borrow-requests")->with('success', 'Book has been successfully returned.');
             } else {
                 // Handle the case where no record with 'borrow_id' 1 was found.
-                return redirect("return-requests")->with('failed','Record was not found.');
+                return redirect("borrow-requests")->with('success', 'Book has been successfully returned.');
+                // return redirect("borrow-requests")->with('failed','Record was not found.');
             }
         }
     }
