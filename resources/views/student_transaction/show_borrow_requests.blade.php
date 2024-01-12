@@ -50,6 +50,7 @@
                                     <th>Process ID</th>
                                     <th>Borrower Name</th>
                                     <th>Book Title</th>
+                                    <th>Borrowed Date</th>
                                     <th>Due Date</th>
                                     <th>Return Date</th>
                                     <th>Status</th>
@@ -63,6 +64,7 @@
                                         <td>{{$bti->process_id}}</td>
                                         <td>{{$bti->name}}</td>
                                         <td>{{$bti->title}}</td>
+                                        <td>{{$bti->date_borrowed}}</td>
                                         <td>{{$bti->due_date}}</td>
                                         <td>{{$bti->return_date}}</td>
 
