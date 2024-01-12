@@ -47,7 +47,10 @@
                                     <option value="0">Log Report</option>
                                     <option value="1">Book Report</option>
                                     <option value="2">Borrow and Return Report</option>
-{{--                                    <option value="3">Student Report</option>--}}
+                                    <option value="3">Most Borrowed Books Report</option>
+                                    <option value="4">Student Report</option>
+                                    <option value="5">Transactions Report</option>
+                                    <option value="6">User Log Report</option>
                                 </select>
                             </div>
 

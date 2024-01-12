@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Session;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendVerificationMailer;
+use App\Models\cadi_userlog;
+use Illuminate\Support\Carbon;
 use PhpParser\Node\Stmt\Return_;
 
 /*'['
@@ -183,6 +185,15 @@ Route::get('/login', function () {
 });
 
 Route::get('/logout', function () {
+    $log_data = [
+            'user_name' => Session::get('name'),
+            'action_done' => Session::get('name') . " has logged out.",
+            'date_done' => Carbon::now('Asia/Manila')->format('Y-m-d'),
+            'time_done' => Carbon::now('Asia/Manila')->format('H:i:s'),
+    ];
+
+    cadi_userlog::create($log_data);
+
     Session::flush();
     return redirect('login');
 });
