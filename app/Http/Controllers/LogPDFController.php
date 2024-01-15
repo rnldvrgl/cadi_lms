@@ -278,8 +278,10 @@ class LogPDFController extends Controller
             ->orderBy('report_id', 'desc')
             ->first();
 
+        $user_logs = cadi_userlog::where('date_done', '>=', $startD)
+        ->where('date_done', '<=', $endD)
+        ->get();
 
-        $user_logs = cadi_userlog::where('created_at', '>=', $startD)->where('created_at', '<=', $endD)->get();
 
         $data = [
             'title' => 'Log Reports',
